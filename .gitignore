@@ -1,0 +1,90 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Environment variables
+*.env
+*.env.*
+.envrc
+
+# Django / Flask / FastAPI specific
+instance/
+.settings/
+*.sqlite3
+db.sqlite3
+
+# Unit test / coverage reports
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.test-results/
+.pytest_cache/
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Static and media (for Django/Flask apps)
+staticfiles/
+media/
+static/
+public/static/
+
+# Pydantic cache (FastAPI)
+__pydantic__/ 
+
+# MyPy
+.mypy_cache/
+
+# IDEs & editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+*.tar
+*.bak
+*.backup
+.docker-compose.override.yml
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Packaging
+*.wheel
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# AWS / GCP / Azure credentials
+.aws/
+.gcloud/
+.azure/
+
+# Local dev artifacts
+*.local
+*.DS_Store
+Thumbs.db
+
+# System files
+ehthumbs.db
+Icon?
