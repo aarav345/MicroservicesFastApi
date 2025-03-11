@@ -3,8 +3,8 @@ from redis_om import get_redis_connection, HashModel
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.requests import Request
-import requests # for sending request to another microservice
-
+import requests, time # for sending request to another microservice
+from fastapi.background import BackgroundTasks
 
 app = FastAPI()
 app.add_middleware(
@@ -81,8 +81,15 @@ class OrderRequest(BaseModel):
 #     return Order.delete(pk)
 
 
+@app.get("/order/{pk}")
+def getOrder(pk : str):
+    return Order.get(pk)
+
+
+
+
 @app.post("/order")
-async def getOrder(request : Request):
+async def getOrder(request : Request, background_tasks: BackgroundTasks):
     body = await request.json() # id, quantity
 
     req = requests.get("http://127.0.0.1:8000/product/%s" % body["id"])
@@ -90,10 +97,22 @@ async def getOrder(request : Request):
 
     order = Order(
         product_id = body["id"],
-        fee = product["fee"],
-        total = product["price"] * body["quantity"],
-        status = "pending",
         price = product["price"],
+        fee = 0.2 * product["price"],
+        total = product["price"] * 1.2,
+        status = "pending",
         quantity = body["quantity"]
     )
 
+    order.save()
+
+    background_tasks.add_task(order_completed, order)
+
+    return order
+
+
+def order_completed(order: Order):
+    time.sleep(5)
+    order.status = "completed"
+    order.save()
+    redis.xadd('order_completed', order.model_dump(), '*') # sends an event, create consumer in the other microservice
